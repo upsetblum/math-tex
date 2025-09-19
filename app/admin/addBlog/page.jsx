@@ -5,7 +5,7 @@ import Image from 'next/image'
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 
-const page = () => {
+const AddBlogPage = () => {
 
     const [pdfFile,setPdfFile] = useState(false);
     const [data,setData] = useState({
@@ -78,4 +78,4 @@ const page = () => {
   )
 }
 
-export default page
+export default AddBlogPage

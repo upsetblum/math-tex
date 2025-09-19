@@ -1,6 +1,7 @@
 'use client';
 import Header from '@/Components/Header';
 import Footer from '@/Components/Footer';
+import Image from 'next/image';
 
 export default function About() {
   return (
@@ -10,7 +11,7 @@ export default function About() {
         {/* Hero Section */}
         <div className="bg-yellow-400 border-4 border-black shadow-[8px_8px_0px_0px_#000] p-8 mb-12 transform rotate-1">
           <h1 className="text-5xl md:text-7xl font-black text-black mb-4 transform -rotate-1">
-            Hi I'm Youssef
+            Hi I&apos;m Youssef
           </h1>
           <p className="text-xl md:text-2xl font-bold text-black transform -rotate-1">
             FULL-STACK DEVELOPER & CREATIVE CODER
@@ -22,16 +23,18 @@ export default function About() {
           {/* Personal Photo Card */}
           <div className="bg-cyan-400 border-4 border-black shadow-[8px_8px_0px_0px_#000] p-6 transform rotate-2 hover:rotate-0 hover:shadow-[12px_12px_0px_0px_#000] hover:scale-105 transition-all duration-300 cursor-pointer group">
             <div className="relative overflow-hidden border-3 border-black">
-              <img
+              <Image
                 src="/portfolio.png"
                 alt="Youssef profil - Full Stack Developer"
+                width={300}
+                height={256}
                 className="w-full h-64 object-cover filter grayscale group-hover:grayscale-0 transition-all duration-300"
               />
               <div className="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-0 transition-all duration-300"></div>
             </div>
             <div className="mt-4 text-center">
               <h3 className="text-xl font-black text-black group-hover:animate-pulse">
-                THAT'S ME!
+                THAT&apos;S ME!
               </h3>
               <p className="text-sm font-bold text-black mt-1">
                 📸LOST IN THE CIVIVILSATION
@@ -41,8 +44,8 @@ export default function About() {
           <div className="bg-pink-400 border-4 border-black shadow-[8px_8px_0px_0px_#000] p-6 transform -rotate-1">
             <h2 className="text-3xl font-black mb-4 text-black">WHO AM I?</h2>
             <p className="text-lg font-bold text-black leading-relaxed">
-              I'm a passionate developer who loves creating digital experiences
-              that make people smile. When I'm not coding, you'll find me
+              I&apos;m a passionate developer who loves creating digital experiences
+              that make people smile. When I&apos;m not coding, you&apos;ll find me
               exploring new technologies and building cool stuff.
             </p>
           </div>
@@ -132,7 +135,7 @@ export default function About() {
         {/* Contact Section */}
         <div className="bg-orange-400 border-4 border-black shadow-[8px_8px_0px_0px_#000] p-8 transform rotate-1">
           <h2 className="text-4xl font-black mb-6 text-black text-center">
-            LET'S CONNECT!
+            LET&apos;S CONNECT!
           </h2>
           <div className="flex flex-col md:flex-row justify-center items-center gap-6">
             <button className="bg-white border-3 border-black shadow-[4px_4px_0px_0px_#000] px-6 py-3 font-black text-black hover:shadow-[8px_8px_0px_0px_#000] transform hover:-translate-x-1 hover:-translate-y-1 transition-all">

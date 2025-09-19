@@ -5,7 +5,7 @@ import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
-const page = ({ params }) => {
+const BlogDetailPage = ({ params }) => {
 
   const [data, setData] = useState(null);
   const [blogId, setBlogId] = useState(null);
@@ -70,7 +70,7 @@ const page = ({ params }) => {
             title="PDF Viewer"
             className='block'
           >
-            <p>Votre navigateur ne supporte pas l'affichage de PDF.
+            <p>Votre navigateur ne supporte pas l&apos;affichage de PDF.
               <a href={data.image} target="_blank" rel="noopener noreferrer">
                 Télécharger le PDF
               </a>
@@ -127,4 +127,4 @@ const page = ({ params }) => {
   )
 }
 
-export default page
+export default BlogDetailPage
