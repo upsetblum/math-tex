@@ -1,8 +1,6 @@
 import { ConnectDB } from "@/lib/config/db"
 import BlogModel from "@/lib/models/BlogModel";
 const { NextResponse } = require("next/server")
-import { writeFile } from 'fs/promises'
-const fs = require('fs')
 
 const LoadDB = async () => {
   await ConnectDB();
@@ -41,38 +39,55 @@ export async function GET(request) {
 
 // API Endpoint For Uploading Blogs
 export async function POST(request) {
+  try {
+    const formData = await request.formData();
 
-  const formData = await request.formData();
-  const timestamp = Date.now();
+    const pdfFile = formData.get('pdfFile');
 
-  const pdfFile = formData.get('pdfFile');
-  const pdfByteData = await pdfFile.arrayBuffer();
-  const pdfBuffer = Buffer.from(pdfByteData);
-  const pdfPath = `./public/pdfs/${timestamp}_${pdfFile.name}`;
-  await writeFile(pdfPath, pdfBuffer);
-  const pdfUrl = `/pdfs/${timestamp}_${pdfFile.name}`;
+    if (!pdfFile) {
+      return NextResponse.json({ error: "No PDF file provided" }, { status: 400 });
+    }
 
-  const blogData = {
-    title: `${formData.get('title')}`,
-    description: `${formData.get('description')}`,
-    category: `${formData.get('category')}`,
-    author: `${formData.get('author')}`,
-    image: `${pdfUrl}`,
-    authorImg: `${formData.get('authorImg')}`
+    // Convert PDF to Buffer for MongoDB storage
+    const pdfByteData = await pdfFile.arrayBuffer();
+    const pdfBuffer = Buffer.from(pdfByteData);
+
+    const blogData = {
+      title: `${formData.get('title')}`,
+      description: `${formData.get('description')}`,
+      category: `${formData.get('category')}`,
+      author: `${formData.get('author')}`,
+      pdfData: pdfBuffer,
+      pdfFileName: pdfFile.name,
+      pdfMimeType: pdfFile.type || 'application/pdf',
+      authorImg: `${formData.get('authorImg')}`
+    }
+
+    await BlogModel.create(blogData);
+    console.log("Blog Saved to MongoDB");
+
+    return NextResponse.json({ success: true, msg: "Blog Added" })
+  } catch (error) {
+    console.error('Error creating blog:', error);
+    return NextResponse.json({ error: "Failed to create blog", details: error.message }, { status: 500 });
   }
-
-  await BlogModel.create(blogData);
-  console.log("Blog Saved");
-
-  return NextResponse.json({ success: true, msg: "Blog Added" })
 }
 
 // Creating API Endpoint to delete Blog
-
 export async function DELETE(request) {
-  const id = await request.nextUrl.searchParams.get('id');
-  const blog = await BlogModel.findById(id);
-  fs.unlink(`./public${blog.image}`, () => { });
-  await BlogModel.findByIdAndDelete(id);
-  return NextResponse.json({ msg: "Blog Deleted" });
+  try {
+    const id = await request.nextUrl.searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ error: "Blog ID is required" }, { status: 400 });
+    }
+
+    await BlogModel.findByIdAndDelete(id);
+    console.log("Blog deleted from MongoDB");
+
+    return NextResponse.json({ msg: "Blog Deleted" });
+  } catch (error) {
+    console.error('Error deleting blog:', error);
+    return NextResponse.json({ error: "Failed to delete blog" }, { status: 500 });
+  }
 }

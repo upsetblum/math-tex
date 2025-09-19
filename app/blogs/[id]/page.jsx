@@ -61,9 +61,9 @@ const BlogDetailPage = ({ params }) => {
     </div>
     <div className='mx-5 max-w-[900px] md:mx-auto mt-[-60px] mb-10'>
       <div className='pdf-container bg-white border-8 border-black shadow-[12px_12px_0px_0px_#000]'>
-        {data.image ? (
+        {data._id ? (
           <iframe
-            src={`${data.image}#toolbar=1&navpanes=0&scrollbar=1&view=FitH`}
+            src={`/api/pdf/${data._id}#toolbar=1&navpanes=0&scrollbar=1&view=FitH`}
             width="100%"
             height="700px"
             style={{border: 'none'}}
@@ -71,7 +71,7 @@ const BlogDetailPage = ({ params }) => {
             className='block'
           >
             <p>Votre navigateur ne supporte pas l&apos;affichage de PDF.
-              <a href={data.image} target="_blank" rel="noopener noreferrer">
+              <a href={`/api/pdf/${data._id}`} target="_blank" rel="noopener noreferrer">
                 Télécharger le PDF
               </a>
             </p>
@@ -84,7 +84,7 @@ const BlogDetailPage = ({ params }) => {
 
         <div className='flex justify-center p-6 bg-orange-400 border-t-8 border-black'>
           <a
-            href={data.image}
+            href={`/api/pdf/${data._id}`}
             target="_blank"
             rel="noopener noreferrer"
             className='px-8 py-4 bg-green-400 text-black font-black text-lg uppercase border-4 border-black shadow-[4px_4px_0px_0px_#000] hover:shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] transition-all transform -rotate-1'
