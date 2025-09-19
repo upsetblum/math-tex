@@ -7,7 +7,7 @@ const nextConfig = {
     ignoreBuildErrors: false,
   },
   images: {
-    unoptimized: false,
+    unoptimized: true,
     remotePatterns: [],
   },
   // Disable output file tracing which causes the build error
