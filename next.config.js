@@ -8,8 +8,11 @@ const nextConfig = {
   },
   images: {
     unoptimized: false,
+    remotePatterns: [],
   },
-  // Remove output: 'standalone' to avoid trace collection issues
+  // Disable output file tracing which causes the build error
+  outputFileTracing: false,
+  swcMinify: true,
 }
 
 module.exports = nextConfig
