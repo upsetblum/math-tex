@@ -9,6 +9,7 @@ const BlogDetailPage = ({ params }) => {
 
   const [data, setData] = useState(null);
   const [blogId, setBlogId] = useState(null);
+  const [pdfAvailable, setPdfAvailable] = useState(false);
 
   useEffect(() => {
     const resolveParams = async () => {
@@ -35,6 +36,15 @@ const BlogDetailPage = ({ params }) => {
           }
         })
         setData(response.data);
+
+        // Check if PDF is available
+        try {
+          const pdfResponse = await fetch(`/api/pdf/${blogId}`, { method: 'HEAD' });
+          setPdfAvailable(pdfResponse.ok);
+        } catch (error) {
+          console.log('PDF not available for this blog');
+          setPdfAvailable(false);
+        }
       } catch (error) {
         console.error('Error fetching blog:', error);
       }
@@ -61,7 +71,7 @@ const BlogDetailPage = ({ params }) => {
     </div>
     <div className='mx-5 max-w-[900px] md:mx-auto mt-[-60px] mb-10'>
       <div className='pdf-container bg-white border-8 border-black shadow-[12px_12px_0px_0px_#000]'>
-        {data._id ? (
+        {pdfAvailable ? (
           <iframe
             src={`/api/pdf/${data._id}#toolbar=1&navpanes=0&scrollbar=1&view=FitH`}
             width="100%"
@@ -78,20 +88,23 @@ const BlogDetailPage = ({ params }) => {
           </iframe>
         ) : (
           <div className='p-8 text-center'>
-            <p className='text-xl font-black text-black uppercase'>Aucun fichier PDF disponible pour cette ressource.</p>
+            <p className='text-xl font-black text-black uppercase'>Cette ressource n&apos;a pas encore été migrée vers le nouveau format PDF.</p>
+            <p className='text-lg text-gray-600 mt-4'>Veuillez contacter l&apos;administrateur pour migrer ce contenu.</p>
           </div>
         )}
 
-        <div className='flex justify-center p-6 bg-orange-400 border-t-8 border-black'>
-          <a
-            href={`/api/pdf/${data._id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className='px-8 py-4 bg-green-400 text-black font-black text-lg uppercase border-4 border-black shadow-[4px_4px_0px_0px_#000] hover:shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] transition-all transform -rotate-1'
-          >
-            📄 PLEIN ÉCRAN
-          </a>
-        </div>
+        {pdfAvailable && (
+          <div className='flex justify-center p-6 bg-orange-400 border-t-8 border-black'>
+            <a
+              href={`/api/pdf/${data._id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className='px-8 py-4 bg-green-400 text-black font-black text-lg uppercase border-4 border-black shadow-[4px_4px_0px_0px_#000] hover:shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] transition-all transform -rotate-1'
+            >
+              📄 PLEIN ÉCRAN
+            </a>
+          </div>
+        )}
       </div>
 
       <div className='blog-content mt-12 bg-cyan-400 border-8 border-black p-8 shadow-[8px_8px_0px_0px_#000] transform -rotate-1'>

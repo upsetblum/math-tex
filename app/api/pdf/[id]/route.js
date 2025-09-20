@@ -74,3 +74,30 @@ export async function GET(request, { params }) {
     }, { status: 500 });
   }
 }
+
+// HEAD request to check if PDF exists without downloading
+export async function HEAD(request, { params }) {
+  try {
+    const { id } = await params;
+
+    if (!id || !id.match(/^[0-9a-fA-F]{24}$/)) {
+      return new Response(null, { status: 400 });
+    }
+
+    const blog = await BlogModel.findById(id);
+
+    if (!blog || !blog.pdfData) {
+      return new Response(null, { status: 404 });
+    }
+
+    return new Response(null, {
+      status: 200,
+      headers: {
+        'Content-Type': blog.pdfMimeType || 'application/pdf',
+        'Content-Length': blog.pdfData.length.toString(),
+      },
+    });
+  } catch (error) {
+    return new Response(null, { status: 500 });
+  }
+}
