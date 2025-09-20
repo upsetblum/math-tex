@@ -2,15 +2,14 @@ import { ConnectDB } from "@/lib/config/db"
 import BlogModel from "@/lib/models/BlogModel";
 const { NextResponse } = require("next/server")
 
-const LoadDB = async () => {
-  await ConnectDB();
-}
-
-LoadDB();
-
-
 // API Endpoint to get all blogs
 export async function GET(request) {
+  try {
+    await ConnectDB();
+  } catch (error) {
+    console.error('DB Connection Error in GET:', error);
+    return NextResponse.json({ error: "Database connection failed" }, { status: 500 });
+  }
 
   const blogId = request.nextUrl.searchParams.get("id");
   if (blogId && blogId !== 'undefined' && blogId !== 'null') {
@@ -40,6 +39,8 @@ export async function GET(request) {
 // API Endpoint For Uploading Blogs
 export async function POST(request) {
   try {
+    await ConnectDB();
+
     const formData = await request.formData();
 
     const pdfFile = formData.get('pdfFile');
@@ -76,6 +77,8 @@ export async function POST(request) {
 // Creating API Endpoint to delete Blog
 export async function DELETE(request) {
   try {
+    await ConnectDB();
+
     const id = await request.nextUrl.searchParams.get('id');
 
     if (!id) {
