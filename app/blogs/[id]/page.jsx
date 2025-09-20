@@ -116,17 +116,15 @@ const BlogDetailPage = ({ params }) => {
       <div className='my-16'>
         <div className='bg-purple-400 border-8 border-black p-8 shadow-[8px_8px_0px_0px_#000] transform rotate-1'>
           <div className='flex justify-center items-center gap-6'>
-            {data.authorImg && (
-              <div className='relative'>
-                <Image
-                  className='border-4 border-black shadow-[6px_6px_0px_0px_#000] transform rotate-2'
-                  src={data.authorImg}
-                  width={120}
-                  height={120}
-                  alt={data.author || 'Author'}
-                />
-              </div>
-            )}
+            <div className='relative'>
+              <Image
+                className='border-4 border-black shadow-[6px_6px_0px_0px_#000] transform rotate-2'
+                src={data.authorImg || "/profile.png"}
+                width={120}
+                height={120}
+                alt={data.author || 'Author'}
+              />
+            </div>
             <div className='bg-yellow-400 border-4 border-black px-6 py-4 transform -rotate-2 shadow-[4px_4px_0px_0px_#000]'>
               <p className='font-black text-black uppercase text-2xl tracking-wide'>{data.author}</p>
               <p className='font-bold text-black text-sm mt-1'>AUTEUR</p>
