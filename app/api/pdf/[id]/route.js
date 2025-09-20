@@ -33,9 +33,22 @@ export async function GET(request, { params }) {
       return NextResponse.json({ error: "Blog not found" }, { status: 404 });
     }
 
+    console.log('Blog found:', {
+      title: blog.title,
+      hasPdfData: !!blog.pdfData,
+      hasImage: !!blog.image,
+      pdfDataLength: blog.pdfData?.length,
+      fields: Object.keys(blog.toObject())
+    });
+
     if (!blog.pdfData) {
       console.error('No PDF data found for blog:', id);
-      return NextResponse.json({ error: "PDF data not found" }, { status: 404 });
+      console.log('Available fields:', Object.keys(blog.toObject()));
+      return NextResponse.json({
+        error: "PDF data not found",
+        details: "This blog may have been created before PDF storage was implemented",
+        availableFields: Object.keys(blog.toObject())
+      }, { status: 404 });
     }
 
     console.log('Serving PDF:', blog.pdfFileName, 'Size:', blog.pdfData.length, 'bytes');

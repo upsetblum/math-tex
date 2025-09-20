@@ -13,7 +13,7 @@ const AddBlogPage = () => {
         description:"",
         category:"Math",
         author:"upset blum",
-        authorImg:"/profile.PNG"
+        authorImg:"/profile.png"
     })
 
     const onChangeHandler = (event) =>{
@@ -41,7 +41,7 @@ const AddBlogPage = () => {
               description:"",
               category:"Math",
               author:"upset blum",
-              authorImg:"/profile.PNG"
+              authorImg:"/profile.png"
             });
         }
         else{

@@ -17,7 +17,7 @@ import blog_pic_16 from './blog_pic_16.png';
 import facebook_icon from './facebook_icon.png'
 import googleplus_icon from './googleplus_icon.png'
 import twitter_icon from './twitter_icon.png'
-import profile_icon from './profile.PNG'
+import profile_icon from './profile.png'
 import logo from './logo.png'
 import arrow from './arrow.png'
 import logo_light from './logo_light.png'
