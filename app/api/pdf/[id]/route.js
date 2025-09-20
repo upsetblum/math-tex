@@ -11,9 +11,11 @@ LoadDB();
 // API Endpoint to serve PDF from MongoDB
 export async function GET(request, { params }) {
   try {
-    const { id } = await params;
+    const resolvedParams = await params;
+    const { id } = resolvedParams;
 
     console.log('Attempting to serve PDF for ID:', id);
+    console.log('Params object:', resolvedParams);
 
     if (!id) {
       console.error('No ID provided');
@@ -78,7 +80,8 @@ export async function GET(request, { params }) {
 // HEAD request to check if PDF exists without downloading
 export async function HEAD(request, { params }) {
   try {
-    const { id } = await params;
+    const resolvedParams = await params;
+    const { id } = resolvedParams;
 
     if (!id || !id.match(/^[0-9a-fA-F]{24}$/)) {
       return new Response(null, { status: 400 });
