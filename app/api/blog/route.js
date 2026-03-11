@@ -41,7 +41,8 @@ export async function POST(request) {
     }
 
     const blob = await put(pdfFile.name, pdfFile.stream(), {
-      access: 'public',
+      access: 'private',
+      addRandomSuffix: true,
       token: process.env.MATHTEX_READ_WRITE_TOKEN,
     });
 

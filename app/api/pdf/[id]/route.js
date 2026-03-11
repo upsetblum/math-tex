@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 import { prisma } from "@/lib/prisma";
+import { getDownloadUrl } from "@vercel/blob";
 const { NextResponse } = require("next/server");
 
 // Redirect to Vercel Blob URL
@@ -18,7 +19,8 @@ export async function GET(request, { params }) {
       return NextResponse.json({ error: "Blog not found" }, { status: 404 });
     }
 
-    return Response.redirect(blog.pdfUrl, 302);
+    const downloadUrl = await getDownloadUrl(blog.pdfUrl, { token: process.env.MATHTEX_READ_WRITE_TOKEN });
+    return Response.redirect(downloadUrl, 302);
   } catch (error) {
     console.error('Error redirecting to PDF:', error);
     return NextResponse.json({ error: "Failed to serve PDF", details: error.message }, { status: 500 });
