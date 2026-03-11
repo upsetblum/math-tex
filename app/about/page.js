@@ -141,9 +141,14 @@ export default function About() {
             <button className="bg-white border-3 border-black shadow-[4px_4px_0px_0px_#000] px-6 py-3 font-black text-black hover:shadow-[8px_8px_0px_0px_#000] transform hover:-translate-x-1 hover:-translate-y-1 transition-all">
               EMAIL ME
             </button>
-            <button className="bg-white border-3 border-black shadow-[4px_4px_0px_0px_#000] px-6 py-3 font-black text-black hover:shadow-[8px_8px_0px_0px_#000] transform hover:-translate-x-1 hover:-translate-y-1 transition-all">
+            <a
+              href="https://www.linkedin.com/in/sidi-185388332/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white border-3 border-black shadow-[4px_4px_0px_0px_#000] px-6 py-3 font-black text-black hover:shadow-[8px_8px_0px_0px_#000] transform hover:-translate-x-1 hover:-translate-y-1 transition-all"
+            >
               LINKEDIN
-            </button>
+            </a>
             <button className="bg-white border-3 border-black shadow-[4px_4px_0px_0px_#000] px-6 py-3 font-black text-black hover:shadow-[8px_8px_0px_0px_#000] transform hover:-translate-x-1 hover:-translate-y-1 transition-all">
               GITHUB
             </button>
