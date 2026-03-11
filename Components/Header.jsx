@@ -52,9 +52,15 @@ const Header = () => {
               <span className="text-2xl shrink-0">⚡</span>
               <p className="text-xs font-black uppercase tracking-widest text-black">Nouvelle fonctionnalité</p>
             </div>
-            <h2 className="text-2xl font-black uppercase text-black leading-tight mb-4">
+            <h2 className="text-2xl font-black uppercase text-black leading-tight mb-2">
               PDF → LaTeX
             </h2>
+            <p className="text-base font-black text-black mb-1">
+              Transforme ton PDF en code LaTeX éditable
+            </p>
+            <p className="text-xs font-semibold text-black mb-4">
+              Dépose un document • récupère le .tex • recompile à la volée • améliore la qualité du contenu
+            </p>
             <div className="flex gap-2 flex-wrap mb-5">
               <span className="bg-black text-cyan-400 px-3 py-1 font-black text-xs uppercase">STREAMING</span>
               <span className="bg-black text-cyan-400 px-3 py-1 font-black text-xs uppercase">COMPILABLE</span>

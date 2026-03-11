@@ -464,7 +464,10 @@ export default function ConvertPage() {
                 PDF → LaTeX
               </h1>
               <p className="text-lg font-bold text-black mt-2 uppercase">
-                Convert any PDF to compilable LaTeX source
+                Transforme ton PDF en code LaTeX éditable
+              </p>
+              <p className="text-sm font-semibold text-black mt-1">
+                Dépose un document • récupère le .tex • recompile à la volée • améliore la qualité du contenu
               </p>
             </div>
           </div>
