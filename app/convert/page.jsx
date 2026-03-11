@@ -64,6 +64,192 @@ function CompiledPdfPanel({ compileStep, compiledPdfUrl, onRetry }) {
   return null;
 }
 
+function PublishModal({ file, latexCode, onClose }) {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('Math');
+  const [author, setAuthor] = useState('');
+  const [metaStatus, setMetaStatus] = useState('idle'); // idle | loading | ready | error
+  const [publishStatus, setPublishStatus] = useState('idle'); // idle | loading | done | error
+
+  const generateMeta = async () => {
+    setMetaStatus('loading');
+    try {
+      const res = await fetch('/api/generate-metadata', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ latex: latexCode }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      setTitle(data.title ?? '');
+      setDescription(data.description ?? '');
+      setMetaStatus('ready');
+    } catch {
+      setMetaStatus('error');
+    }
+  };
+
+  const handlePublish = async () => {
+    if (!title.trim() || !file) return;
+    setPublishStatus('loading');
+    try {
+      const formData = new FormData();
+      formData.append('pdfFile', file);
+      formData.append('title', title.trim());
+      formData.append('description', description.trim());
+      formData.append('category', category);
+      formData.append('author', author.trim() || 'Admin');
+      formData.append('authorImg', '/about-blog.webp');
+
+      const res = await fetch('/api/blog', { method: 'POST', body: formData });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to publish');
+      }
+      setPublishStatus('done');
+    } catch (err) {
+      console.error(err);
+      setPublishStatus('error');
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+      <div className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_#000] p-8 max-w-lg w-full mx-4">
+        {publishStatus === 'done' ? (
+          <div className="text-center">
+            <div className="bg-green-400 border-4 border-black p-6 shadow-[4px_4px_0px_0px_#000] mb-6">
+              <p className="font-black text-black text-xl uppercase">Published!</p>
+              <p className="font-bold text-black text-sm mt-1">Your PDF is now live on the blog.</p>
+            </div>
+            <div className="flex gap-3 justify-center">
+              <Link
+                href="/"
+                className="px-6 py-3 bg-yellow-400 text-black font-black uppercase text-sm border-4 border-black shadow-[4px_4px_0px_0px_#000] hover:shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+              >
+                VIEW BLOG
+              </Link>
+              <button
+                onClick={onClose}
+                className="px-6 py-3 bg-white text-black font-black uppercase text-sm border-4 border-black shadow-[4px_4px_0px_0px_#000] hover:shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+              >
+                CLOSE
+              </button>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-black uppercase">Publish to Blog</h2>
+              <button onClick={onClose} className="font-black text-xl border-2 border-black w-8 h-8 flex items-center justify-center hover:bg-gray-100">✕</button>
+            </div>
+
+            {metaStatus === 'idle' && (
+              <div className="mb-6">
+                <p className="font-bold text-sm text-gray-600 mb-4">
+                  Let Claude generate a title and description from your document, or fill them in manually.
+                </p>
+                <button
+                  onClick={generateMeta}
+                  className="px-5 py-2.5 bg-cyan-400 text-black font-black uppercase text-sm border-4 border-black shadow-[4px_4px_0px_0px_#000] hover:shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+                >
+                  AUTO-GENERATE WITH CLAUDE
+                </button>
+              </div>
+            )}
+
+            {metaStatus === 'loading' && (
+              <div className="mb-6 flex items-center gap-3">
+                <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                <span className="font-black text-sm uppercase">Generating metadata...</span>
+              </div>
+            )}
+
+            {metaStatus === 'error' && (
+              <div className="mb-4 bg-pink-400 border-2 border-black p-3">
+                <p className="font-black text-sm">Failed to generate. Fill in manually below.</p>
+              </div>
+            )}
+
+            <div className="space-y-4">
+              <div>
+                <label className="block font-black text-xs uppercase mb-1">Title *</label>
+                <input
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="Document title"
+                  className="w-full border-4 border-black px-3 py-2 font-bold text-sm focus:outline-none focus:ring-0 focus:border-yellow-400"
+                />
+              </div>
+              <div>
+                <label className="block font-black text-xs uppercase mb-1">Description</label>
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Short description..."
+                  rows={3}
+                  className="w-full border-4 border-black px-3 py-2 font-bold text-sm focus:outline-none resize-none focus:border-yellow-400"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-black text-xs uppercase mb-1">Category</label>
+                  <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    className="w-full border-4 border-black px-3 py-2 font-bold text-sm focus:outline-none bg-white"
+                  >
+                    <option value="Math">Math</option>
+                    <option value="Physics">Physics</option>
+                    <option value="CS">CS</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block font-black text-xs uppercase mb-1">Author</label>
+                  <input
+                    value={author}
+                    onChange={(e) => setAuthor(e.target.value)}
+                    placeholder="Author name"
+                    className="w-full border-4 border-black px-3 py-2 font-bold text-sm focus:outline-none focus:border-yellow-400"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {publishStatus === 'error' && (
+              <div className="mt-4 bg-pink-400 border-2 border-black p-3">
+                <p className="font-black text-sm">Publish failed. Check that you are logged in and DATABASE_URL / BLOB_READ_WRITE_TOKEN are set.</p>
+              </div>
+            )}
+
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={handlePublish}
+                disabled={!title.trim() || publishStatus === 'loading'}
+                className={`flex-1 py-3 font-black uppercase text-sm border-4 border-black transition-all ${
+                  title.trim() && publishStatus !== 'loading'
+                    ? 'bg-yellow-400 shadow-[4px_4px_0px_0px_#000] hover:shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px]'
+                    : 'bg-gray-200 text-gray-400 cursor-not-allowed shadow-none'
+                }`}
+              >
+                {publishStatus === 'loading' ? 'PUBLISHING...' : 'PUBLISH'}
+              </button>
+              <button
+                onClick={onClose}
+                className="px-5 py-3 bg-white font-black uppercase text-sm border-4 border-black shadow-[4px_4px_0px_0px_#000] hover:shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+              >
+                CANCEL
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function ConvertPage() {
   const [file, setFile]             = useState(null);
   const [step, setStep]             = useState('idle');
@@ -73,8 +259,9 @@ export default function ConvertPage() {
   const [dragOver, setDragOver]     = useState(false);
   const [tokenCount, setTokenCount] = useState(0);
   const [progress, setProgress]     = useState(0);
-  const [compileStep, setCompileStep]     = useState('idle');
+  const [compileStep, setCompileStep]       = useState('idle');
   const [compiledPdfUrl, setCompiledPdfUrl] = useState(null);
+  const [showPublish, setShowPublish]       = useState(false);
   const codeRef    = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -117,6 +304,7 @@ export default function ConvertPage() {
     setTokenCount(0);
     setProgress(0);
     setCompileStep('idle');
+    setShowPublish(false);
     if (compiledPdfUrl) {
       URL.revokeObjectURL(compiledPdfUrl);
       setCompiledPdfUrl(null);
@@ -159,7 +347,6 @@ export default function ConvertPage() {
 
       setProgress(100);
       setStep('done');
-      // auto-compile with the final accumulated code
       triggerCompile(acc);
     } catch (err) {
       setErrorMsg(err.message || 'Conversion failed');
@@ -175,6 +362,7 @@ export default function ConvertPage() {
     setTokenCount(0);
     setProgress(0);
     setCompileStep('idle');
+    setShowPublish(false);
     if (pdfUrl) { URL.revokeObjectURL(pdfUrl); setPdfUrl(null); }
     if (compiledPdfUrl) { URL.revokeObjectURL(compiledPdfUrl); setCompiledPdfUrl(null); }
   };
@@ -230,6 +418,12 @@ export default function ConvertPage() {
               >
                 ↓ .tex
               </a>
+              <button
+                onClick={() => setShowPublish(true)}
+                className="px-3 py-1.5 bg-pink-400 text-black font-black uppercase text-xs border-2 border-black shadow-[2px_2px_0px_0px_#000] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+              >
+                PUBLISH
+              </button>
               <button
                 onClick={handleReset}
                 className="px-3 py-1.5 bg-white text-black font-black uppercase text-xs border-2 border-black shadow-[2px_2px_0px_0px_#000] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
@@ -370,6 +564,15 @@ export default function ConvertPage() {
             <p className="font-bold text-black text-sm">{errorMsg}</p>
           </div>
         </div>
+      )}
+
+      {/* Publish modal */}
+      {showPublish && (
+        <PublishModal
+          file={file}
+          latexCode={latexCode}
+          onClose={() => setShowPublish(false)}
+        />
       )}
     </div>
   );

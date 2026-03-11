@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Blog {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  category    String
+  author      String
+  authorImg   String   @default("/about-blog.webp")
+  pdfUrl      String
+  pdfFileName String
+  date        DateTime @default(now())
+}
+
+model Email {
+  id    String   @id @default(cuid())
+  email String   @unique
+  date  DateTime @default(now())
+}

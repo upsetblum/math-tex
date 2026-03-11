@@ -55,18 +55,19 @@ const Header = () => {
                   Nouvelle fonctionnalité
                 </p>
                 <h2 className="text-2xl sm:text-3xl font-black uppercase text-black leading-tight mb-2">
-                  PDF → LaTeX en un clic
+                  PDF → LaTeX compilable
                 </h2>
                 <p className="text-sm sm:text-base font-semibold text-black mb-4 leading-relaxed">
-                  Colle n&apos;importe quel PDF — examen, TD, article — et récupère instantanément
-                  le <span className="bg-black text-cyan-400 px-1">source LaTeX</span> compilable.
-                  Idéal pour adapter un corrigé, réutiliser des formules ou éditer un document
-                  que tu n&apos;as pas en source.
+                  Dépose n&apos;importe quel PDF — examen, TD, cours — et obtiens en temps réel
+                  le <span className="bg-black text-cyan-400 px-1">source LaTeX</span> restructuré
+                  par IA avec mise en page typographique soignée (boîtes tcolorbox, couleurs,
+                  en-têtes). Le résultat se compile <strong>directement</strong> dans l&apos;aperçu
+                  intégré, sans quitter la page.
                 </p>
                 <ul className="text-xs font-black uppercase text-black space-y-1 mb-5">
-                  <li>▶ Formules mathématiques préservées</li>
-                  <li>▶ Structure du document reconstituée</li>
-                  <li>▶ Source .tex téléchargeable directement</li>
+                  <li>▶ Génération en streaming — vois le code apparaître en direct</li>
+                  <li>▶ Compilation automatique et aperçu PDF côte à côte</li>
+                  <li>▶ Télécharge le .tex ou copie-le en un clic</li>
                 </ul>
                 <Link
                   href="/convert"
