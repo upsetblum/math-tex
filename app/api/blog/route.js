@@ -38,7 +38,10 @@ export async function POST(request) {
       return NextResponse.json({ error: "No PDF file provided" }, { status: 400 });
     }
 
-    const blob = await put(pdfFile.name, pdfFile.stream(), { access: 'public' });
+    const blob = await put(pdfFile.name, pdfFile.stream(), {
+      access: 'public',
+      token: process.env.MATHTEX_READ_WRITE_TOKEN,
+    });
 
     await prisma.blog.create({
       data: {
