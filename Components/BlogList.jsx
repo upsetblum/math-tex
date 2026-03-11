@@ -40,16 +40,6 @@ const BlogList = () => {
         >
           MATH
         </button>
-        <button
-          onClick={()=>setMenu('Info')}
-          className={`px-6 py-3 font-black text-lg uppercase border-4 border-black transition-all ${
-            menu==="Info"
-              ? 'bg-pink-400 text-black shadow-[6px_6px_0px_0px_#000] transform rotate-2'
-              : 'bg-white text-black shadow-[4px_4px_0px_0px_#000] hover:shadow-[6px_6px_0px_0px_#000] hover:translate-x-[-2px] hover:translate-y-[-2px]'
-          }`}
-        >
-          INFO
-        </button>
       </div>
       <div className='flex flex-wrap justify-around gap-1 gap-y-10 mb-16 xl:mx-24'>
         {blogs.filter((item)=> menu==="All"?true:item.category===menu).map((item,index)=>{

@@ -24,7 +24,7 @@ export default function About() {
           <div className="bg-cyan-400 border-4 border-black shadow-[8px_8px_0px_0px_#000] p-6 transform rotate-2 hover:rotate-0 hover:shadow-[12px_12px_0px_0px_#000] hover:scale-105 transition-all duration-300 cursor-pointer group">
             <div className="relative overflow-hidden border-3 border-black">
               <Image
-                src="/portfolio.png"
+                src="/about-blog.webp"
                 alt="Youssef profil - Full Stack Developer"
                 width={300}
                 height={256}

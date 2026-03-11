@@ -6,7 +6,6 @@ import React from 'react'
 const BlogItem = ({title,description,category,id}) => {
   const categoryColors = {
     'Math': 'bg-cyan-400',
-    'Info': 'bg-pink-400'
   };
 
   return (
