@@ -1,11 +1,19 @@
+'use client';
 import { assets } from "@/Assets/assets";
 import Sidebar from "@/Components/AdminComponents/Sidebar";
 import LogoutButton from "@/Components/AdminComponents/LogoutButton";
 import Image from "next/image";
-import { ToastContainer} from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+import { usePathname } from "next/navigation";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Layout({ children }) {
+    const pathname = usePathname();
+
+    if (pathname === '/admin/login') {
+        return <>{children}</>;
+    }
+
     return (
         <>
             <div className="flex">
