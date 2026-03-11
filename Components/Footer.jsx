@@ -47,7 +47,7 @@ const Footer = () => {
 
         <div className='mt-8 pt-6 border-t-4 border-yellow-400 text-center'>
           <p className='text-white font-bold text-sm uppercase tracking-wide'>
-            © 2024 MATH&TEX - TOUS DROITS RÉSERVÉS
+            © 2026 MATH&TEX - TOUS DROITS RÉSERVÉS
           </p>
         </div>
       </div>
