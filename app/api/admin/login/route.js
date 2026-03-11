@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { createHmac } from 'node:crypto';
 import { NextResponse } from 'next/server';
 
