@@ -32,20 +32,24 @@ const AddBlogPage = () => {
         formData.append('author',data.author);
         formData.append('authorImg',data.authorImg);
         formData.append('pdfFile',pdfFile);
-        const response = await axios.post('/api/blog',formData);
-        if (response.data.success) {
-            toast.success(response.data.msg);
-            setPdfFile(false);
-            setData({
-              title:"",
-              description:"",
-              category:"Math",
-              author:"upset blum",
-              authorImg:"/profile.png"
-            });
-        }
-        else{
-            toast.error("Error");
+        try {
+            const response = await axios.post('/api/blog',formData);
+            if (response.data.success) {
+                toast.success(response.data.msg);
+                setPdfFile(false);
+                setData({
+                    title:"",
+                    description:"",
+                    category:"Math",
+                    author:"upset blum",
+                    authorImg:"/profile.png"
+                });
+            } else {
+                toast.error("Error");
+            }
+        } catch (err) {
+            const msg = err?.response?.data?.details || err?.response?.data?.error || err.message || "Error";
+            toast.error(msg);
         }
     }
 
